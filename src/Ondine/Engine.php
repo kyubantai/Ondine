@@ -65,7 +65,7 @@ class Engine
 
         foreach($default as $key => $value)
         {
-            self::$config[$key] = $config[$key] | $value;
+            self::$config[$key] = (array_key_exists($key, $config)) ? $config[$key] : $value;
         }
     }
 
