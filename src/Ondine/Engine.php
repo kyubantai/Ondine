@@ -1,6 +1,7 @@
 <?php
 
 namespace Ondine;
+use Ondine\Exceptions\OndineException;
 
 /**
  * Class Engine
@@ -102,21 +103,21 @@ class Engine
     {
         if (!is_file(self::$config['dictionary']))
         {
-            throw new \Ondine\Exceptions\OndineException(self::$config['dictionary'] . ', no such file. Don\'t forget to generate this file!');
+            throw new OndineException(self::$config['dictionary'] . ', no such file. Don\'t forget to generate this file!');
         }
 
         $json = file_get_contents(self::$config['dictionary']);
 
         if ($json === FALSE || empty($json))
         {
-            throw new \Ondine\Exceptions\OndineException('Can\'t read file ' . self::$config['dictionary'] . ' or empty content.');
+            throw new OndineException('Can\'t read file ' . self::$config['dictionary'] . ' or empty content.');
         }
 
         self::$dictionary = json_decode($json, true);
 
         if (self::$dictionary === FALSE || empty(self::$dictionary))
         {
-            throw new \Ondine\Exceptions\OndineException('Can\'t convert dictionary from JSON to Array');
+            throw new OndineException('Can\'t convert dictionary from JSON to Array');
         }
     }
 } 
