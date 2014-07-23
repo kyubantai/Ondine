@@ -10,14 +10,35 @@ use Ondine\Exceptions\OndineException;
 class Engine
 {
     /**
-     * @var Engine Engine instance
-     */
-    private static $instance;
-
-    /**
      * @const NO_STRING Used to describe a null string parameter
      */
     const NO_STRING = 'NO_STRING';
+
+    /**
+     * @const FORMAT_HTML HTML format used to return data
+     */
+    const FORMAT_HTML = "html";
+
+    /**
+     * @const FORMAT_XML XML format used to return data
+     */
+    const FORMAT_XML = "xml";
+
+    /**
+     * @const FORMAT_JSON JSON format used to return data
+     */
+    const FORMAT_JSON = "json";
+
+    /**
+     * @const FORMAT_TEXT Format used to return data
+     */
+    const FORMAT_TEXT = "text";
+
+
+    /**
+     * @var Engine Engine instance
+     */
+    private static $instance;
 
     /**
      * @var array $config Engine's config
@@ -29,6 +50,18 @@ class Engine
      */
     private static $dictionary;
 
+    /**
+     * @var string $format Response format
+     */
+    private static $format = self::FORMAT_HTML;
+
+
+
+    /**
+     * @var \Ondine\IO\Response Response from module
+     */
+    private $response = null;
+
     private function __construct()
     {
         //TODO:
@@ -38,18 +71,30 @@ class Engine
      * Ask the specified question and return an answer
      * @param string $string Question for Ondine
      * @throws \InvalidArgumentException
-     * @return
      */
     public function ask($string = self::NO_STRING)
     {
-        if ($string === self::NO_STRING)
+        if ($string === self::NO_STRING || !is_string($string))
         {
             throw new \InvalidArgumentException('Missing or empty parameter String');
         }
         
         //TODO:
+    }
 
-        return null;
+    /**
+     * Display engine response.
+     * @param bool $header (Optionnal) Set to TRUE if you want to declare automatically headers
+     * @throws Exceptions\OndineException
+     */
+    public function show($header = false)
+    {
+        if ($this->response === NULL)
+        {
+            throw new OndineException('No response ready');
+        }
+
+        $this->response->display($header);
     }
 
     /**
@@ -66,7 +111,8 @@ class Engine
 
         $default = [
             'dictionary'    => __DIR__ . '/../../res/dictionary.json',
-            'mods'          => __DIR__ . '/Mod/'
+            'mods'          => __DIR__ . '/Mod/',
+            'format'        => self::FORMAT_JSON
         ];
 
         foreach($default as $key => $value)
@@ -99,6 +145,10 @@ class Engine
         return self::$config;
     }
 
+    /**
+     * Load the dictionary from the JSON generated file
+     * @throws Exceptions\OndineException
+     */
     private static function loadDictionary()
     {
         if (!is_file(self::$config['dictionary']))

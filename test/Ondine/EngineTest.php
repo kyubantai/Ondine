@@ -7,7 +7,7 @@ class EngineTest extends PHPUnit_Framework_TestCase
 
     public static function setUpBeforeClass()
     {
-        self::$path = __DIR__ . '/../../res/generated/dictionary.json';
+        self::$path = __DIR__ . '/dictionary.json';
         if (!file_put_contents(self::$path, '{ "mod": [ {"word": "1"} ]}'))
         {
             throw new Exception();
@@ -15,7 +15,8 @@ class EngineTest extends PHPUnit_Framework_TestCase
 
         self::$default = [
             'dictionary'    => self::$path,
-            'mods'          => __DIR__ . '/../../src/Ondine/Mod'
+            'mods'          => __DIR__ . '/Mod',
+            'format'        => 'html'
         ];
     }
 
