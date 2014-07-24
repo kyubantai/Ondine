@@ -1,10 +1,18 @@
 #!/usr/bin/env python
 import os
 
+
+
+# Main variables
 generatedPath = './res/generated/'
 generatedFile = 'dictionary.json'
 modPath = './src/Ondine/Mod/'
 
+
+
+
+# Check if dictionary path exists
+# If not, creates it
 def checkGeneratedDir():
 	if not os.path.exists(generatedPath): 
 		print ''
@@ -12,6 +20,9 @@ def checkGeneratedDir():
 		os.makedirs(generatedPath)
 		print '[INFO] Created directory ' + generatedPath
 
+
+# Read all folders contained in
+# the mod path.
 def readMods():
 	mods = []
 
@@ -25,12 +36,17 @@ def readMods():
 
 	return mods
 
+
+# Read the specified dictionary
 def getDictionary(path):
 	f = open(path)
 	lines = f.read()
 	f.close()
+
 	return lines
 
+
+# Convert list dictionary to a JSON string
 def DictionaryToJSON(dictionary):
 	_string = ""
 
@@ -40,6 +56,8 @@ def DictionaryToJSON(dictionary):
 
 	return _string[:-1]
 
+
+# Write the dictionary in a file
 def writeInDictionary(content):
 	checkGeneratedDir()
 
@@ -57,6 +75,8 @@ def writeInDictionary(content):
 	print '[INFO] Main dictionary created successfully'
 	print '[INFO] -------------------------------'
 
+
+# Main function
 def generateDictionary():
 	print '[INFO] -------------------------------'
 	print '[INFO] Starting process'
@@ -75,11 +95,13 @@ def generateDictionary():
 		else:
 			print '[WARN] No dictionary for ' + dictionaryPath
 
+
 	print ''
 	print '[INFO] Loaded ' + `len(dictionary)` + ' dictionaries'
 
 	json = DictionaryToJSON(dictionary)
-
 	writeInDictionary(json)
 
+
+# Execute process
 generateDictionary()
