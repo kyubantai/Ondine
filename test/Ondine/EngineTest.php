@@ -58,4 +58,31 @@ class EngineTest extends PHPUnit_Framework_TestCase
         }
         catch(InvalidArgumentException $e) {}
     }
+
+    public function testSanitize()
+    {
+        $string1 = "this is a test";
+        $sanitized = \Ondine\Engine::sanitize($string1);
+        $this->assertEquals($string1, $sanitized);
+
+        $string2 = "This Is a Test";
+        $sanitized = \Ondine\Engine::sanitize($string2);
+        $this->assertNotEquals($string2, $sanitized);
+        $this->assertEquals($string1, $sanitized);
+    }
+
+    public function testToArray()
+    {
+        $string1 = "This is a simple test";
+        $string2 = "This is, I think, another basic test.";
+        $string3 = "Where is Bryan? I'm asking 'cause I'ven't seen him for a while...";
+
+        $array1 = \Ondine\Engine::toArray($string1);
+        $array2 = \Ondine\Engine::toArray($string2);
+        $array3 = \Ondine\Engine::toArray($string3);
+
+        $this->assertCount(5, $array1);
+        $this->assertCount(7, $array2);
+        $this->assertCount(12, $array3);
+    }
 } 
