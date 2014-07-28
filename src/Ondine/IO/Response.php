@@ -2,6 +2,10 @@
 
 namespace Ondine\IO;
 
+/**
+ * Class Response
+ * @package Ondine\IO
+ */
 abstract class Response
 {
 

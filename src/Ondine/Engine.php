@@ -226,6 +226,7 @@ class Engine
     /**
      * Scan mod's weight for each word
      * @param array $words Array of words
+     * @throws OndineException
      */
     public function handleWords($words)
     {
@@ -243,10 +244,11 @@ class Engine
     /**
      * Search weight of a word in each mod and add it to the table
      * @param string $word Word to scan
+     * @throws OndineException
      */
     public function scanWordWeight($word)
     {
-        if ($this->dictionary == null || !is_array($this->dictionary))
+        if (self::$dictionary == null || !is_array(self::$dictionary))
         {
             throw new OndineException('Dictionary not loadded');
         }
@@ -256,7 +258,7 @@ class Engine
             throw new OndineException('Supplied word is null or empty');
         }
 
-        foreach($this->dictionary as $mod => $dictionary)
+        foreach(self::$dictionary as $mod => $dictionary)
         {
             if (array_key_exists($word, $dictionary))
             {

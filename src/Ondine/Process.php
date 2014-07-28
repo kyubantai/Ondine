@@ -2,36 +2,69 @@
 
 namespace Ondine;
 
+/**
+ * Class Process
+ * @package Ondine
+ */
 class Process
 {
-	private $question;
+    /**
+     * @var string
+     */
+    private $question;
 
-	private $weightArray = [];
+    /**
+     * @var array
+     */
+    private $weightArray = [];
 
-	private $response;
+    /**
+     * @var IO\Response
+     */
+    private $response;
 
-	private $format;
+    /**
+     * @var string
+     */
+    private $format;
 
-	private $timeStart;
+    /**
+     * @var int
+     */
+    private $timeStart;
 
-	private $timeStop;
+    /**
+     * @var int
+     */
+    private $timeStop;
 
 	public function __construct() 
 	{
 		$this->start();
 	}
 
-	public function setQuestion($question)
+    /**
+     * @param string $question
+     */
+    public function setQuestion($question)
 	{
 		$this->question = $question;
 	}
 
-	public function getQuestion()
+    /**
+     * @return string
+     */
+    public function getQuestion()
 	{
 		return $this->question;
 	}
 
-	public function addWeightTo($mod, $weight)
+    /**
+     * Add a weight corresponding to the mod in weight array
+     * @param string $mod
+     * @param int $weight
+     */
+    public function addWeightTo($mod, $weight)
 	{
 		if (array_key_exists($mod, $this->weightArray))
 		{
@@ -45,44 +78,71 @@ class Process
 		asort($this->weightArray);
 	}
 
-	public function getWeightArray()
+    /**
+     * @return array
+     */
+    public function getWeightArray()
 	{
 		return $this->weightArray;
 	}
 
-	public function setResponse($response)
+    /**
+     * @param IO\Response $response
+     */
+    public function setResponse($response)
 	{
 		$this->response = $response;
 	}
 
-	public function getResponse()
+    /**
+     * @return IO\Response
+     */
+    public function getResponse()
 	{
 		return $this->response;
 	}
 
-	public function setFormat($format)
+    /**
+     * @param string $format
+     */
+    public function setFormat($format)
 	{
 		$this->format = $format;
 	}
 
-	public function getFormat()
+    /**
+     * @return string
+     */
+    public function getFormat()
 	{
 		return $this->format;
 	}
 
-	private function start()
+    /**
+     * Start process
+     * (Register start time)
+     */
+    private function start()
 	{
 		$this->timeStart = microtime();
 	}
 
-	public function stop($response)
+    /**
+     * Stop process
+     * (Register stop time)
+     * @param IO\Response $response
+     */
+    public function stop($response)
 	{
 		$this->timeStop = microtime();
 
 		$this->setResponse($response);
 	}
 
-	public function save()
+    /**
+     * Save the process
+     */
+    public function save()
 	{
 		//TODO:
 	}

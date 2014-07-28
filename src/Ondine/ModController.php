@@ -2,6 +2,10 @@
 
 namespace Ondine;
 
+/**
+ * Class ModController
+ * @package Ondine
+ */
 abstract class ModController {
 
     /**
