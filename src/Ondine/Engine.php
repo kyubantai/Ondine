@@ -54,14 +54,9 @@ class Engine
     /**
      * @var string $format Response format
      */
-    private static $format = self::FORMAT_HTML;
+    private static $format = self::FORMAT_JSON;
 
 
-
-    /**
-     * @var \Ondine\IO\Response Response from module
-     */
-    private $response = null;
 
     /**
      * @var \Ondine\Process Object containing all data of this execution
@@ -120,7 +115,7 @@ class Engine
         if ($modInstance instanceof ModController)
         {
             $modInstance->init(self::$format); //TODO:
-            $this->process->setResponse($modInstance->response());
+            $this->process->stop($modInstance->response());
         }
         else
         {
@@ -135,17 +130,15 @@ class Engine
      */
     public function show($header = false)
     {
-        if ($this->response === NULL)
+        if ($this->process->getResponse() === NULL)
         {
             throw new OndineException('No response ready');
         }
 
-        $this->process->stop($this->response);
-
         // All is done, save the process in logs
         $this->process->save();
 
-        $this->response->display($header);
+        $this->process->getResponse()->display($header);
     }
 
     /**
