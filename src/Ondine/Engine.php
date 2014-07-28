@@ -1,6 +1,7 @@
 <?php
 
 namespace Ondine;
+
 use Ondine\Exceptions\OndineException;
 
 /**
@@ -62,11 +63,17 @@ class Engine
      */
     private $response = null;
 
+    /**
+     * @var \Ondine\Process Object containing all data of this execution
+     */
+    private $process;
+
 
 
     private function __construct()
     {
-        //TODO:
+        // Start new process
+        $this->process = new Process();
     }
 
     /**
@@ -80,8 +87,17 @@ class Engine
         {
             throw new \InvalidArgumentException('Missing or empty parameter String');
         }
+
+        $this->process->setQuestion($string);
         
-        //TODO:
+        $string = self::sanitize($string);
+        $stringArray = self::toArray($string);
+
+        $this->handleWords($stringArray);
+
+        $mod = $this->getRelatedMod();
+
+        //TODO: Execute mod and get response
     }
 
     /**
@@ -96,7 +112,12 @@ class Engine
             throw new OndineException('No response ready');
         }
 
+        $this->process->stop($this->response);
+
         $this->response->display($header);
+
+        // All is done, save the process in logs
+        $this->process->save();
     }
 
     /**
@@ -172,4 +193,92 @@ class Engine
             throw new OndineException('Can\'t convert dictionary from JSON to Array');
         }
     }
-} 
+
+    /**
+     * Sanitize a string
+     * @param string $text String to sanitize
+     * @return string The sanitized string
+     */
+    public static function sanitize($text)
+    {
+        $text = strtolower($text);
+
+        // Other things may come here later
+
+        return $text;
+    }
+
+    /**
+     * Explode the string (keeping only words)
+     * @param string $string The string to convert in an array
+     * @return array
+     */
+    public static function toArray($string)
+    {
+        $array = preg_split("/[\s,\!\?\.\:]+/", $string);
+
+        // Remove empty values
+        $array = array_filter($array);
+
+        return $array;
+    }
+
+    /**
+     * Scan mod's weight for each word
+     * @param array $words Array of words
+     */
+    public function handleWords($words)
+    {
+        if (!is_array($words))
+        {
+            throw new OndineException('Expected parameter to be an array');
+        }
+
+        foreach($words as $word)
+        {
+            $this->scanWordWeight($word);
+        }
+    }
+
+    /**
+     * Search weight of a word in each mod and add it to the table
+     * @param string $word Word to scan
+     */
+    public function scanWordWeight($word)
+    {
+        if ($this->dictionary == null || !is_array($this->dictionary))
+        {
+            throw new OndineException('Dictionary not loadded');
+        }
+
+        if ($word == null || empty($word))
+        {
+            throw new OndineException('Supplied word is null or empty');
+        }
+
+        foreach($this->dictionary as $mod => $dictionary)
+        {
+            if (array_key_exists($word, $dictionary))
+            {
+                $this->process->addWeightTo($mod, $dictionary[$word]);
+            }
+        }
+    }
+
+    /**
+     * Gets mod's name with the best matching
+     * @return string Name of the mod
+     */
+    public function getRelatedMod()
+    {
+        $array = $this->process->getWeightArray();
+        if (count($array) == 0)
+        {
+            return null;
+        }
+
+        list($first, $rest) = array_keys($array);
+
+        return $first;
+    }
+}
