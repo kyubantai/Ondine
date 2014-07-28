@@ -79,17 +79,17 @@ class Engine
     /**
      * Ask the specified question and return an answer
      * @param string $string Question for Ondine
-     * @throws \InvalidArgumentException
+     * @throws OndineException
      */
     public function ask($string = self::NO_STRING)
     {
         if ($string === self::NO_STRING || !is_string($string))
         {
-            throw new \InvalidArgumentException('Missing or empty parameter String');
+            throw new OndineException('Missing or empty parameter String');
         }
 
         $this->process->setQuestion($string);
-        
+
         $string = self::sanitize($string);
         $stringArray = self::toArray($string);
 
@@ -97,13 +97,41 @@ class Engine
 
         $mod = $this->getRelatedMod();
 
-        //TODO: Execute mod and get response
+        if ($mod == null)
+        {
+            $this->process->setResponse(null); //TODO:
+            return;
+        }
+
+        $path = self::$config['mods'] . $mod . '/' . $mod . '.php';
+        if (!is_file($path))
+        {
+            throw new OndineException('Invalid mod name/directory');
+        }
+
+        require $path;
+
+        if (!class_exists($mod))
+        {
+            throw new OndineException('Invalid mod name/class association');
+        }
+
+        $modInstance = new $mod;
+        if ($modInstance instanceof ModController)
+        {
+            $modInstance->init(self::$format); //TODO:
+            $this->process->setResponse($modInstance->response());
+        }
+        else
+        {
+            throw new OndineException('Main mod class does not extend the ModController class');
+        }
     }
 
     /**
      * Display engine response.
-     * @param bool $header (Optionnal) Set to TRUE if you want to declare automatically headers
-     * @throws Exceptions\OndineException
+     * @param bool $header (Optional) Set to TRUE if you want to declare automatically headers
+     * @throws OndineException
      */
     public function show($header = false)
     {
@@ -114,10 +142,10 @@ class Engine
 
         $this->process->stop($this->response);
 
-        $this->response->display($header);
-
         // All is done, save the process in logs
         $this->process->save();
+
+        $this->response->display($header);
     }
 
     /**
