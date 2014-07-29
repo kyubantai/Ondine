@@ -56,7 +56,7 @@ class EngineTest extends PHPUnit_Framework_TestCase
 
             $this->fail('Should crash');
         }
-        catch(InvalidArgumentException $e) {}
+        catch(\Ondine\Exceptions\OndineException $e) {}
     }
 
     public function testSanitize()
