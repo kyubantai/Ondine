@@ -144,6 +144,17 @@ class Process
      */
     public function save()
 	{
-		//TODO:
+        $array = [
+            'question' => $this->question,
+            'response' => $this->response->getContent(),
+            'format'   => $this->format,
+            'start'    => $this->timeStart,
+            'stop'     => $this->timeStop,
+            'weight'   => $this->weightArray
+        ];
+
+        $json = json_encode($array);
+
+		//TODO: Save json
 	}
 }
