@@ -91,7 +91,7 @@ class Engine
 
         if ($mod == null)
         {
-            $this->process->setResponse(Response::getFormatedResponse(self::$config['format'], 'No mod matching', Response::STATUS_WARNING));
+            $this->process->setResponse(Response::getFormatedResponse(self::$config['format'], 'NoModMatching', Response::STATUS_WARNING));
             return;
         }
 
