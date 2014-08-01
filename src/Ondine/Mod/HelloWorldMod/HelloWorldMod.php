@@ -25,7 +25,7 @@ class HelloWorldMod extends Ondine\ModController
      */
     public function response()
     {
-        $text = 'Hello you&&&éééé"é(fs!';
+        $text = 'Hello you!';
 
         $response = null;
         switch ($this->format)

@@ -91,6 +91,12 @@ Usage
 $instance = \Ondine\Engine::getInstance();
 $instance->ask('Hello Ondine!'); // Send question
 $instance->show(); // Display answer
+
+/*
+{
+"content": "Hello you!"
+}
+*/
 ```
 
 Tests
