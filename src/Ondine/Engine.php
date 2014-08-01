@@ -114,7 +114,7 @@ class Engine
         $modInstance = new $modClass;
         if ($modInstance instanceof ModController)
         {
-            $modInstance->init(self::$config['format']);
+            $modInstance->init(self::$config['format'], $keywords);
             $this->process->stop($modInstance->response());
         }
         else

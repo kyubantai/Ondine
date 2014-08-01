@@ -13,8 +13,9 @@ class HelloWorldMod extends Ondine\ModController
     /**
      * Called after building controller
      * @param string $format Format used for responses
+     * @param array $keywords Keywords
      */
-    public function init($format = Engine::FORMAT_JSON)
+    public function init($format = Engine::FORMAT_JSON, $keywords = [])
     {
         $this->format = $format;
     }
