@@ -99,3 +99,11 @@ Tests
 ```sh
 $ phpunit --bootstrap vendor/autoload.php test
 ```
+
+What's coming?
+--------------
+
+* Keyword detection (Keyword: important words in your question, like the name of a video when you ask for it).
+* **More mods!**
+* Improvements
+* Statistics
