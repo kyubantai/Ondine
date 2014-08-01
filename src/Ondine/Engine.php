@@ -87,6 +87,7 @@ class Engine
 
         $this->handleWords($stringArray);
 
+        $keywords = $this->getKeywords($stringArray);
         $mod = $this->getRelatedMod();
 
         if ($mod == null)
@@ -302,5 +303,18 @@ class Engine
         list($first,) = array_keys($array);
 
         return $first;
+    }
+
+    public function getKeywords($array=[])
+    {
+        $keywords = [];
+        if (!is_array($array) || empty($array))
+        {
+            return $keywords;
+        }
+
+        //TODO:
+
+        return $keywords;
     }
 }

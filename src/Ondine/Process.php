@@ -38,6 +38,11 @@ class Process
      */
     private $timeStop;
 
+    /**
+     * @var array
+     */
+    private $keywords = [];
+
 	public function __construct() 
 	{
 		$this->start();
@@ -140,6 +145,24 @@ class Process
 	}
 
     /**
+     * Add a keyword to the array
+     * @param $word
+     */
+    public function addKeyword($word)
+    {
+        $this->keywords[] = $word;
+    }
+
+    /**
+     * Get the keyword array
+     * @return array
+     */
+    public function getKeywords()
+    {
+        return $this->keywords;
+    }
+
+    /**
      * Save the process
      */
     public function save()
@@ -150,7 +173,8 @@ class Process
             'format'   => $this->format,
             'start'    => $this->timeStart,
             'stop'     => $this->timeStop,
-            'weight'   => $this->weightArray
+            'weight'   => $this->weightArray,
+            'keywords' => $this->keywords
         ];
 
         $json = json_encode($array);
