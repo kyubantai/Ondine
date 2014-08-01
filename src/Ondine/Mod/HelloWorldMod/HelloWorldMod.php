@@ -1,10 +1,10 @@
 <?php
 
-namespace Ondine\Mod\HelloWorldMod;
+namespace Ondine\Mod;
 
 use Ondine\Engine;
 
-class HelloWorldController extends \Ondine\ModController
+class HelloWorldMod extends \Ondine\ModController
 {
     /**
      * Called after building controller

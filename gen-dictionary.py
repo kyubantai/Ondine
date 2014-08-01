@@ -51,10 +51,10 @@ def DictionaryToJSON(dictionary):
 	_string = ""
 
 	for mod in dictionary:
-		string = '{ "' + mod + '": ' + dictionary[mod] + ' },'
+		string = '"' + mod + '": ' + dictionary[mod] + ' ,'
 		_string += string
 
-	return '[' + _string[:-1] + ']'
+	return '{' + _string[:-1] + '}'
 
 
 # Write the dictionary in a file

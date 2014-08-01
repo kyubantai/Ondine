@@ -106,12 +106,14 @@ class Engine
 
         require $path;
 
-        if (!class_exists($mod))
+        $modClass = "\Ondine\Mod\\" . $mod;
+
+        if (!class_exists($modClass))
         {
-            throw new OndineException('Invalid mod name/class association');
+            throw new OndineException('Invalid mod name/class association (mod ' . $modClass . ' does not exist');
         }
 
-        $modInstance = new $mod;
+        $modInstance = new $modClass;
         if ($modInstance instanceof ModController)
         {
             $modInstance->init(self::$format); //TODO:
@@ -300,7 +302,7 @@ class Engine
             return null;
         }
 
-        list($first, $rest) = array_keys($array);
+        list($first,) = array_keys($array);
 
         return $first;
     }
