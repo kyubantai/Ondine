@@ -52,11 +52,6 @@ class Engine
      */
     private static $dictionary;
 
-    /**
-     * @var string $format Response format
-     */
-    private static $format = self::FORMAT_JSON;
-
 
 
     /**
@@ -70,7 +65,7 @@ class Engine
     {
         // Start new process
         $this->process = new Process();
-        $this->process->setFormat(self::$format);
+        $this->process->setFormat(self::$config['format']);
     }
 
     /**
@@ -96,7 +91,7 @@ class Engine
 
         if ($mod == null)
         {
-            $this->process->setResponse(Response::getFormatedResponse(self::$format, 'No mod matching', Response::STATUS_WARNING));
+            $this->process->setResponse(Response::getFormatedResponse(self::$config['format'], 'No mod matching', Response::STATUS_WARNING));
             return;
         }
 
@@ -118,7 +113,7 @@ class Engine
         $modInstance = new $modClass;
         if ($modInstance instanceof ModController)
         {
-            $modInstance->init(self::$format); //TODO:
+            $modInstance->init(self::$config['format']);
             $this->process->stop($modInstance->response());
         }
         else

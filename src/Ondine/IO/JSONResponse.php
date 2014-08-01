@@ -22,7 +22,10 @@ class JSONResponse extends Response
 
         $json = json_encode($array, JSON_PRETTY_PRINT);
 
-        header('Content-Type: application/json');
+        if ($header)
+        {
+            header('Content-Type: application/json');
+        }
         http_response_code(self::statusToCode($this->getStatus()));
         print $json;
     }

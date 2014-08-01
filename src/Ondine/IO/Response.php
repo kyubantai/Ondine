@@ -99,7 +99,6 @@ abstract class Response
                 return 500;
                 break;
             default:
-
                 return 0;
         }
     }
@@ -121,13 +120,10 @@ abstract class Response
                 return new JSONResponse($message, $status);
                 break;
             case Engine::FORMAT_XML:
-                //TODO:
+                return new XMLResponse($message, $status);
                 break;
             case Engine::FORMAT_HTML:
-                //TODO:
-                break;
-            case Engine::FORMAT_TEXT:
-                //TODO:
+                return new HTMLResponse($message);
                 break;
         }
     }
