@@ -3,6 +3,7 @@
 namespace Ondine;
 
 use Ondine\Exceptions\OndineException;
+use Ondine\IO\Response;
 
 /**
  * Class Engine
@@ -69,6 +70,7 @@ class Engine
     {
         // Start new process
         $this->process = new Process();
+        $this->process->setFormat(self::$format);
     }
 
     /**
@@ -94,7 +96,7 @@ class Engine
 
         if ($mod == null)
         {
-            $this->process->setResponse(null); //TODO:
+            $this->process->setResponse(Response::getFormatedResponse(self::$format, 'No mod matching', Response::STATUS_WARNING));
             return;
         }
 

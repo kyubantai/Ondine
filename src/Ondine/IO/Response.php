@@ -1,6 +1,7 @@
 <?php
 
 namespace Ondine\IO;
+use Ondine\Engine;
 
 /**
  * Class Response
@@ -37,6 +38,11 @@ abstract class Response
     protected $content;
 
 
+    public function __construct($content, $status=self::STATUS_SUCCESS)
+    {
+        $this->setContent($content);
+        $this->setStatus($status);
+    }
 
     /**
      * Set response's status
@@ -73,6 +79,60 @@ abstract class Response
     {
         $this->content = $content;
     }
+
+
+
+    /**
+     * Return an HTTP response code corresponding to the specified status
+     * @param int $status
+     * @return int
+     */
+    public static function statusToCode($status)
+    {
+        switch($status)
+        {
+            case self::STATUS_SUCCESS:
+            case self::STATUS_WARNING:
+                return 200;
+                break;
+            case self::STATUS_ERROR:
+                return 500;
+                break;
+            default:
+
+                return 0;
+        }
+    }
+
+
+
+    /**
+     * Return a Response child corresponding to the format
+     * @param string $format
+     * @param string $message
+     * @param int $status
+     * @return Response
+     */
+    public static function getFormatedResponse($format, $message, $status)
+    {
+        switch($format)
+        {
+            case Engine::FORMAT_JSON:
+                return new JSONResponse($message, $status);
+                break;
+            case Engine::FORMAT_XML:
+                //TODO:
+                break;
+            case Engine::FORMAT_HTML:
+                //TODO:
+                break;
+            case Engine::FORMAT_TEXT:
+                //TODO:
+                break;
+        }
+    }
+
+
 
     /**
      * Display the response

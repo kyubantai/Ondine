@@ -2,9 +2,11 @@
 
 namespace Ondine\Mod;
 
+use Ondine;
 use Ondine\Engine;
+use Ondine\IO\JSONResponse;
 
-class HelloWorldMod extends \Ondine\ModController
+class HelloWorldMod extends Ondine\ModController
 {
     /**
      * Called after building controller
@@ -21,7 +23,6 @@ class HelloWorldMod extends \Ondine\ModController
      */
     public function response()
     {
-        // TODO: Implement response() method.
+        return new JSONResponse('Hello you!');
     }
-
 }
